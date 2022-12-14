@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.13)
 option(USE_ICONV "Use iconv for converting Shift-JIS to UTF-8." ON)
 
+project(run68 C)
+
 #add_definitions(-DFNC_TRACE -DENV_FROM_INI)
 add_definitions(-DENV_FROM_INI)
 
 if(USE_ICONV)
+    find_package(Iconv REQUIRED)
     add_definitions(-DUSE_ICONV)
 else()
 endif()
-
-
-project(run68 C)
 
 if (EMSCRIPTEN)
 set(CMAKE_EXE_LINKER_FLAGS "--embed-file ./fs@ -sFORCE_FILESYSTEM")
@@ -58,10 +58,8 @@ add_executable(run68 ${SRC})
 set(LIBS m) # math lib
 
 if(USE_ICONV)
-
-  if(APPLE)
-    set(LIBS ${LIBS} "iconv")
-  endif()
+  include_directories(${Iconv_INCLUDE_DIRS})
+  set(LIBS ${LIBS} ${Iconv_LIBRARIES})
 endif()
 
 target_link_libraries(run68 PUBLIC ${LIBS})

@@ -26,8 +26,7 @@
   #include <windows.h>
 #elif defined(DOSX)
   #include <dos.h>
-#elif defined(__APPLE__)
-#else
+#elif defined(__linux__)
   #include <sys/sysinfo.h>
 #endif
 
@@ -177,11 +176,11 @@ int iocs_call()
 			ul = time( NULL );
 			rd [ 0 ] = (ul % (60 * 60 * 24)) * 100;
 			rd [ 1 ] = ((ul / (60 * 60 * 24)) & 0xFFFF);
-#elif defined(__APPLE__) || defined(__EMSCRIPTEN__)
+#elif !defined(__linux__)
 			ul = time( NULL );
 			rd [ 0 ] = (ul % (60 * 60 * 24)) * 100;
 			rd [ 1 ] = ((ul / (60 * 60 * 24)) & 0xFFFF);
-#else
+#else //__linux__
             {
 				struct sysinfo info;
 				sysinfo(&info);

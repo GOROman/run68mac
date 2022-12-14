@@ -99,7 +99,7 @@ HANDLE stdin_handle;
 /* アボート処理のためのジャンプバッファ */
 jmp_buf jmp_when_abort;
 
-#if defined (__APPLE__) || defined(__linux__) || defined(__EMSCRIPTEN__)
+#if !defined(WIN32) && !defined(DOSX)
 char *strlwr(char *str)
 {
   unsigned char *p = (unsigned char *)str;

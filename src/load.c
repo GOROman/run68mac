@@ -137,7 +137,7 @@ ErrorRet:
     return NULL;
 }
 
-#if defined(__APPLE__) || defined(__linux__) || defined(__EMSCRIPTEN__)
+#if !defined(WIN32) && !defined(DOSX)
   #define PATH_DELIMITER ':'
 #else
   #define PATH_DELIMITER ';'
