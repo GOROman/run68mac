@@ -463,7 +463,7 @@ const EXEC_INSTRUCTION_INFO *OPBuf_getentry(int no)
     戻り値：
       なし。
 */
-void OPBuf_display(n)
+void OPBuf_display(int n)
 {
     int max = OPBuf_numentries();
     int i;
