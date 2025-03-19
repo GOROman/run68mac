@@ -38,7 +38,8 @@ static void chomp(char *buf)
 
 void	read_ini(char *path, char *prog)
 {
-	char	buf[1024];
+	char	dir[1024] = {0};
+	char	buf[1024] = {0};
 	char	sec_name[MAX_PATH];
 	FILE	*fp;
 	int	flag = TRUE;
@@ -58,12 +59,15 @@ void	read_ini(char *path, char *prog)
     /* まずはファイル名を取得する。*/
     if ((p = strrchr(path, '\\')) != NULL)
     {
+        memcpy(dir, path, p - path + 1);
         strcpy(buf, p+1);
     } else if ((p = strrchr(path, '/')) != NULL)
     {
+        memcpy(dir, path, p - path + 1);
         strcpy(buf, p+1);
     } else if ((p = strrchr(path, ':')) != NULL)
     {
+        memcpy(dir, path, p - path + 1);
         strcpy(buf, p+1);
     } else
     {
@@ -81,19 +85,8 @@ void	read_ini(char *path, char *prog)
     {
         return; /* .exe以外の拡張子はないと思う。*/
     }
-#if defined(WIN32)
-    /* 次に、フルパス名を得る。*/
-    l = SearchPath(
-        NULL,       // address of search path 
-        buf,        // address of filename 
-        NULL,       // address of extension 
-        MAX_PATH,   // size, in characters, of buffer 
-        path,       // address of buffer for found filename 
-        &p          // address of pointer to file component 
-    );
-#else
-    snprintf(path, MAX_PATH, "%s", buf);
-#endif
+    /* ディレクトリ名とファイル名を結合する。*/
+	snprintf(path, MAX_PATH, "%s%s", dir, buf);
 #if defined(_DEBUG)
     printf("INI:%s\n", path);
 #endif
